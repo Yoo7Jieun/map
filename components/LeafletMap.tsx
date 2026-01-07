@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { calculateCelestialInfo, type CelestialInfo } from "@/lib/astronomy";
 import { latLngToGrid } from "@/lib/coordConvert";
 import ControlPanel from "./ControlPanel";
+import InfoPanel from "./InfoPanel";
 
 // 마커 아이콘 설정 (Leaflet 기본 아이콘 문제 해결)
 const markerIcon = new L.Icon({
@@ -124,20 +125,6 @@ export default function LeafletMap() {
 		}
 	};
 
-	// 하늘 상태 텍스트
-	const getSkyText = (sky: number) => {
-		switch (sky) {
-			case 1:
-				return "☀️ 맑음";
-			case 3:
-				return "⛅ 구름많음";
-			case 4:
-				return "☁️ 흐림";
-			default:
-				return "❓ 알 수 없음";
-		}
-	};
-
 	return (
 		<div className="relative w-full h-screen">
 			<MapContainer center={[36.5, 127.5]} zoom={7} className="w-full h-full z-0" style={{ background: "#1a1a2e" }} maxZoom={18}>
@@ -154,86 +141,7 @@ export default function LeafletMap() {
 			<ControlPanel showLightPollution={showLightPollution} onToggleLightPollution={() => setShowLightPollution(!showLightPollution)} />
 
 			{/* 정보 패널 */}
-			{selectedLocation && (
-				<div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-[1000] bg-gray-900/95 backdrop-blur rounded-xl p-4 text-white shadow-2xl">
-					<h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-						📍 선택한 위치
-						{loading && <span className="text-sm text-gray-400">불러오는 중...</span>}
-					</h3>
-
-					<div className="grid grid-cols-2 gap-3 text-sm mb-4">
-						<div className="bg-gray-800 rounded-lg p-2">
-							<span className="text-gray-400">위도</span>
-							<p className="font-mono">{selectedLocation.lat.toFixed(5)}°</p>
-						</div>
-						<div className="bg-gray-800 rounded-lg p-2">
-							<span className="text-gray-400">경도</span>
-							<p className="font-mono">{selectedLocation.lng.toFixed(5)}°</p>
-						</div>
-					</div>
-
-					{/* 천문 정보 */}
-					{celestialInfo && (
-						<div className="mb-4">
-							<h4 className="text-sm font-semibold text-gray-300 mb-2">🌌 천문 정보</h4>
-							<div className="grid grid-cols-2 gap-2 text-sm">
-								<div className="bg-gray-800 rounded-lg p-2">
-									<span className="text-gray-400">달</span>
-									<p>{celestialInfo.moonPhase}</p>
-									<p className="text-xs text-gray-500">
-										밝기 {celestialInfo.moonIllumination}% · 고도 {celestialInfo.moonAltitude}°
-									</p>
-								</div>
-								<div className="bg-gray-800 rounded-lg p-2">
-									<span className="text-gray-400">은하수 중심</span>
-									<p>고도 {celestialInfo.milkyWayCenterAltitude}°</p>
-									<p className="text-xs text-gray-500">방위각 {celestialInfo.milkyWayCenterAzimuth}°</p>
-								</div>
-							</div>
-
-							{/* 관측 점수 */}
-							<div className="mt-2 bg-gray-800 rounded-lg p-3">
-								<div className="flex justify-between items-center mb-1">
-									<span className="text-gray-400">관측 적합도</span>
-									<span className={`font-bold ${celestialInfo.observationScore >= 50 ? "text-green-400" : "text-orange-400"}`}>{celestialInfo.observationScore}점</span>
-								</div>
-								<div className="w-full bg-gray-700 rounded-full h-2">
-									<div className={`h-2 rounded-full ${celestialInfo.observationScore >= 50 ? "bg-green-500" : "bg-orange-500"}`} style={{ width: `${celestialInfo.observationScore}%` }} />
-								</div>
-								<p className="text-xs text-gray-500 mt-1">{celestialInfo.isGoodForObservation ? "✅ 은하수 관측에 적합합니다" : "⚠️ 은하수 관측에 부적합합니다"}</p>
-							</div>
-						</div>
-					)}
-
-					{/* 날씨 정보 */}
-					{weather && (
-						<div className="mb-4">
-							<h4 className="text-sm font-semibold text-gray-300 mb-2">🌤️ 날씨</h4>
-							<div className="grid grid-cols-3 gap-2 text-sm">
-								<div className="bg-gray-800 rounded-lg p-2 text-center">
-									<p>{getSkyText(weather.sky)}</p>
-								</div>
-								<div className="bg-gray-800 rounded-lg p-2 text-center">
-									<span className="text-gray-400">기온</span>
-									<p>{weather.temperature}°C</p>
-								</div>
-								<div className="bg-gray-800 rounded-lg p-2 text-center">
-									<span className="text-gray-400">습도</span>
-									<p>{weather.humidity}%</p>
-								</div>
-							</div>
-						</div>
-					)}
-
-					{/* 길찾기 버튼 */}
-					<button onClick={openKakaoNavigation} className="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-bold rounded-lg transition-colors">
-						🚗 카카오맵으로 길찾기
-					</button>
-				</div>
-			)}
-
-			{/* 사용 안내 */}
-			{!selectedLocation && <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[1000] bg-gray-900/90 backdrop-blur px-6 py-3 rounded-full text-white text-sm">지도를 클릭하여 관측 장소를 선택하세요</div>}
+			<InfoPanel selectedLocation={selectedLocation} celestialInfo={celestialInfo} weather={weather} loading={loading} onNavigate={openKakaoNavigation} />
 		</div>
 	);
 }

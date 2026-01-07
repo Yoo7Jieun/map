@@ -45,8 +45,9 @@ export async function GET(request: NextRequest) {
 
 	const { baseDate, baseTime } = getBaseDateTime();
 
+	// 기상청 API는 serviceKey가 이미 인코딩된 상태여야 함
+	// URLSearchParams는 이중 인코딩하므로 직접 URL 구성
 	const params = new URLSearchParams({
-		serviceKey: KMA_API_KEY,
 		numOfRows: "60",
 		pageNo: "1",
 		dataType: "JSON",
@@ -56,12 +57,16 @@ export async function GET(request: NextRequest) {
 		ny,
 	});
 
+	const url = `${BASE_URL}?serviceKey=${KMA_API_KEY}&${params}`;
+	console.log("[KMA API] Request URL:", url);
+
 	try {
-		const response = await fetch(`${BASE_URL}?${params}`, {
+		const response = await fetch(url, {
 			next: { revalidate: 600 }, // 10분 캐시
 		});
 
 		const data = await response.json();
+		console.log("[KMA API] Response:", JSON.stringify(data).slice(0, 500));
 
 		if (data.response?.header?.resultCode !== "00") {
 			console.error("기상청 API 오류:", data.response?.header);
