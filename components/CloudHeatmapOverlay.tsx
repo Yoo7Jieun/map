@@ -1,6 +1,15 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+
+// 간단한 debounce 함수
+function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
+	let timer: any;
+	return (...args: Parameters<T>) => {
+		clearTimeout(timer);
+		timer = setTimeout(() => fn(...args), delay);
+	};
+}
 import type { CloudGridData } from "@/lib/cloudHeatmap";
 import { createCloudHeatmap, canvasToDataURL, auroraColorScale, meteoCloudColorScale } from "@/lib/cloudHeatmap";
 
@@ -77,7 +86,6 @@ export default function CloudHeatmapOverlay({ map, enabled = true, style = "defa
 	// 히트맵을 카카오맵 오버레이로 표시
 	useEffect(() => {
 		if (!map || !gridData || !enabled) {
-			// 오버레이 제거
 			if (overlayRef.current) {
 				overlayRef.current.setMap(null);
 				overlayRef.current = null;
@@ -85,58 +93,57 @@ export default function CloudHeatmapOverlay({ map, enabled = true, style = "defa
 			return;
 		}
 
-		try {
-			// 줌 레벨에 따른 히트맵 크기 계산
-			// level 1 (최대 확대) = 3200px, level 14 (최소) = 400px
-			const baseSize = 800;
-			const sizeMultiplier = Math.pow(2, (9 - mapLevel) * 0.3); // 레벨에 따라 크기 조정
-			const size = Math.max(400, Math.min(3200, baseSize * sizeMultiplier));
-
-			// 히트맵 Canvas 생성
-			const canvas = createCloudHeatmap(gridData, {
-				width: size,
-				height: size,
-				colorScale: style === "aurora" ? auroraColorScale : meteoCloudColorScale,
-				opacity: 0.6,
-			});
-
-			const imageUrl = canvasToDataURL(canvas);
-
-			// 기존 오버레이 제거
-			if (overlayRef.current) {
-				overlayRef.current.setMap(null);
+		// debounce로 오버레이 생성/제거 묶기
+		const renderOverlay = debounce(() => {
+			try {
+				const bounds = map.getBounds();
+				const sw = bounds.getSouthWest();
+				const ne = bounds.getNorthEast();
+				const proj = map.getProjection();
+				const swPixel = proj.containerPointFromCoords(sw);
+				const nePixel = proj.containerPointFromCoords(ne);
+				const width = Math.abs(nePixel.x - swPixel.x);
+				const height = Math.abs(nePixel.y - swPixel.y);
+				const canvas = createCloudHeatmap(gridData, {
+					width: Math.round(width),
+					height: Math.round(height),
+					colorScale: style === "aurora" ? auroraColorScale : meteoCloudColorScale,
+					opacity: 0.6,
+				});
+				const imageUrl = canvasToDataURL(canvas);
+				if (overlayRef.current) {
+					overlayRef.current.setMap(null);
+				}
+				const overlayContent = document.createElement("div");
+				overlayContent.style.position = "relative";
+				overlayContent.style.left = `0px`;
+				overlayContent.style.top = `0px`;
+				overlayContent.style.width = `${width}px`;
+				overlayContent.style.height = `${height}px`;
+				overlayContent.style.pointerEvents = "none";
+				overlayContent.style.zIndex = "1";
+				const img = document.createElement("img");
+				img.src = imageUrl;
+				img.style.width = "100%";
+				img.style.height = "100%";
+				img.style.opacity = "0.6";
+				overlayContent.appendChild(img);
+				const overlay = new kakao.maps.CustomOverlay({
+					content: overlayContent,
+					position: sw,
+					xAnchor: 0,
+					yAnchor: 1,
+					map: map,
+				});
+				overlayRef.current = overlay;
+				// console.log("[CloudHeatmap] Overlay created, viewport size:", width, height, "level:", mapLevel);
+			} catch (err: any) {
+				console.error("[CloudHeatmap] Overlay error:", err);
+				setError(err.message);
 			}
+		}, 150); // 150ms 지연
 
-			// CustomOverlay로 이미지 오버레이 생성
-			const overlayContent = document.createElement("div");
-			overlayContent.style.position = "absolute";
-			overlayContent.style.transform = "translate(-50%, -50%)";
-			overlayContent.style.pointerEvents = "none";
-			overlayContent.style.zIndex = "1";
-
-			const img = document.createElement("img");
-			img.src = imageUrl;
-			img.style.width = `${size}px`;
-			img.style.height = `${size}px`;
-			img.style.opacity = "0.6";
-			overlayContent.appendChild(img);
-
-			// 태백시 중심 좌표
-			const centerPosition = new kakao.maps.LatLng(37.1667, 128.9889);
-
-			const overlay = new kakao.maps.CustomOverlay({
-				content: overlayContent,
-				position: centerPosition,
-				map: map,
-			});
-
-			overlayRef.current = overlay;
-
-			console.log("[CloudHeatmap] Overlay created, size:", size, "level:", mapLevel);
-		} catch (err: any) {
-			console.error("[CloudHeatmap] Overlay error:", err);
-			setError(err.message);
-		}
+		renderOverlay();
 
 		return () => {
 			if (overlayRef.current) {

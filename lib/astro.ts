@@ -1,7 +1,6 @@
 import SunCalc from "suncalc";
 
 export type Astro = {
-	sunAltitudeDeg: number | null;
 	moonAltitudeDeg: number | null;
 	moonIlluminationPct: number | null;
 	moonPhaseName: string | null;
@@ -22,15 +21,13 @@ function phaseName(fraction: number, angle: number): string {
 
 export function computeAstro(lat: number, lon: number, date = new Date()): Astro {
 	try {
-		const sunPos = SunCalc.getPosition(date, lat, lon); // altitude radians
 		const moonPos = SunCalc.getMoonPosition(date, lat, lon);
 		const illum = SunCalc.getMoonIllumination(date);
-		const sunAltitudeDeg = sunPos.altitude * (180 / Math.PI);
 		const moonAltitudeDeg = moonPos.altitude * (180 / Math.PI);
 		const moonIlluminationPct = +(illum.fraction * 100).toFixed(1);
 		const moonPhaseName = phaseName(illum.fraction, illum.angle);
-		return { sunAltitudeDeg, moonAltitudeDeg, moonIlluminationPct, moonPhaseName };
+		return { moonAltitudeDeg, moonIlluminationPct, moonPhaseName };
 	} catch (e) {
-		return { sunAltitudeDeg: null, moonAltitudeDeg: null, moonIlluminationPct: null, moonPhaseName: null };
+		return { moonAltitudeDeg: null, moonIlluminationPct: null, moonPhaseName: null };
 	}
 }

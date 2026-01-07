@@ -47,7 +47,6 @@ export type WeatherSnapshot = {
 	moonIlluminationPct: number | null;
 	moonAltitudeDeg: number | null;
 	moonPhaseName: string | null;
-	sunAltitudeDeg: number | null;
 };
 
 export type WeatherCache = {

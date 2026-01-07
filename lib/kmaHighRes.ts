@@ -135,7 +135,6 @@ export async function fetchKmaHighResSnapshot(coord: { lat: number; lon: number 
 		moonIlluminationPct: astro.moonIlluminationPct,
 		moonAltitudeDeg: astro.moonAltitudeDeg,
 		moonPhaseName: astro.moonPhaseName,
-		sunAltitudeDeg: astro.sunAltitudeDeg,
 	};
 
 	console.log("[HighRes] Snapshot created:", {

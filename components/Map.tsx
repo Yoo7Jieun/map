@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { TAEBEAK_BOUNDARY, isPointInPolygon } from "@/data/taebaekBoundary";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import type { WeatherSnapshot } from "../types/weather";
 import CloudHeatmapOverlay from "./CloudHeatmapOverlay";
 
@@ -45,14 +44,37 @@ export default function Map({ places = [], center = { lat: 37.1667, lng: 128.988
 	const mapRef = useRef<any>(null);
 	const mapDivRef = useRef<HTMLDivElement | null>(null);
 	const markersRef = useRef<any[]>([]);
-	const polygonRef = useRef<any>(null);
-	const outsideMsgRef = useRef<HTMLDivElement | null>(null);
+	// const polygonRef = useRef<any>(null);
+	// const outsideMsgRef = useRef<HTMLDivElement | null>(null);
 	const [loaded, setLoaded] = useState(false);
 	const [searchKeyword, setSearchKeyword] = useState("");
 	const [weather, setWeather] = useState<WeatherSnapshot | null>(null);
 	const [weatherError, setWeatherError] = useState<string | null>(null);
 	const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>(center);
 	const [showCloudHeatmap, setShowCloudHeatmap] = useState(true);
+
+	// Weather fetch 함수 (컴포넌트 레벨)
+	const fetchWeather = useCallback(() => {
+		fetch("/api/weather/current")
+			.then((r) => {
+				if (r.status === 503) {
+					// 데이터 로딩 중
+					return Promise.reject(new Error("데이터 로딩 중..."));
+				}
+				if (!r.ok) {
+					return Promise.reject(new Error("weather http " + r.status));
+				}
+				return r.json();
+			})
+			.then((data) => {
+				setWeather(data.highRes);
+				setWeatherError(null);
+			})
+			.catch((e) => {
+				console.error("[Weather] Error:", e);
+				setWeatherError(e.message);
+			});
+	}, []);
 
 	useEffect(() => {
 		let mounted = true;
@@ -64,53 +86,15 @@ export default function Map({ places = [], center = { lat: 37.1667, lng: 128.988
 				if (!mapRef.current) {
 					const options = {
 						center: new kakao.maps.LatLng(center.lat, center.lng),
-						level: 9, // 태백시 전체가 보이도록 줌 레벨 조정
+						level: 9, // 대한민국 전체가 보이도록 줌 레벨 조정
 					};
 					mapRef.current = new kakao.maps.Map(mapDivRef.current, options);
-
-					// 태백시 행정 경계 폴리곤 표시
-					const path = TAEBEAK_BOUNDARY.map((p) => new kakao.maps.LatLng(p.lat, p.lng));
-					const polygon = new kakao.maps.Polygon({
-						path,
-						strokeWeight: 2,
-						strokeColor: "#00d4aa",
-						strokeOpacity: 0.9,
-						strokeStyle: "solid",
-						fillColor: "#00d4aa",
-						fillOpacity: 0.15,
-					});
-					polygon.setMap(mapRef.current);
-					polygonRef.current = polygon;
-
-					// 서비스 지역 외 메시지 엘리먼트 (초기 숨김)
-					outsideMsgRef.current = document.createElement("div");
-					outsideMsgRef.current.style.position = "absolute";
-					outsideMsgRef.current.style.top = "12px";
-					outsideMsgRef.current.style.left = "50%";
-					outsideMsgRef.current.style.transform = "translateX(-50%)";
-					outsideMsgRef.current.style.background = "rgba(200,0,0,0.85)";
-					outsideMsgRef.current.style.color = "#fff";
-					outsideMsgRef.current.style.padding = "10px 18px";
-					outsideMsgRef.current.style.borderRadius = "6px";
-					outsideMsgRef.current.style.fontSize = "14px";
-					outsideMsgRef.current.style.fontWeight = "600";
-					outsideMsgRef.current.style.boxShadow = "0 2px 6px rgba(0,0,0,0.4)";
-					outsideMsgRef.current.style.pointerEvents = "none";
-					outsideMsgRef.current.style.zIndex = "1001";
-					outsideMsgRef.current.style.display = "none";
-					outsideMsgRef.current.textContent = "서비스 지역이 아닙니다";
-					wrapperRef.current?.appendChild(outsideMsgRef.current);
-
-					// 중심 이동 시 서비스 지역 판별 (폴리곤 기반)
-					kakao.maps.event.addListener(mapRef.current, "center_changed", function () {
+				}
+				// 지도 중심 이동 시 mapCenter 갱신
+				if (mapRef.current && window.kakao) {
+					window.kakao.maps.event.addListener(mapRef.current, "center_changed", function () {
 						const c = mapRef.current.getCenter();
-						const lat = c.getLat();
-						const lng = c.getLng();
-						setMapCenter({ lat, lng });
-						const inside = isPointInPolygon(lat, lng, TAEBEAK_BOUNDARY);
-						if (outsideMsgRef.current) {
-							outsideMsgRef.current.style.display = inside ? "none" : "block";
-						}
+						setMapCenter({ lat: c.getLat(), lng: c.getLng() });
 					});
 				}
 				setLoaded(true);
@@ -120,47 +104,14 @@ export default function Map({ places = [], center = { lat: 37.1667, lng: 128.988
 			});
 
 		// Fetch weather snapshot initially
-		const fetchWeather = () => {
-			fetch("/api/weather/current")
-				.then((r) => {
-					if (r.status === 404) {
-						// No data yet, trigger auto-refresh to create initial snapshot
-						console.log("[Weather] No data found, triggering auto-refresh...");
-						return fetch("/api/weather/auto-refresh", { method: "POST" }).then((refreshRes) => {
-							if (refreshRes.ok) {
-								// Retry fetching current weather
-								return fetch("/api/weather/current").then((retryRes) => (retryRes.ok ? retryRes.json() : Promise.reject(new Error("Retry failed"))));
-							}
-							return Promise.reject(new Error("Auto-refresh failed"));
-						});
-					}
-					if (!r.ok) {
-						return Promise.reject(new Error("weather http " + r.status));
-					}
-					return r.json();
-				})
-				.then((data) => {
-					setWeather(data.snapshot);
-					setWeatherError(null);
-				})
-				.catch((e) => {
-					console.error("[Weather] Error:", e);
-					setWeatherError(e.message);
-				});
-		};
-
 		fetchWeather();
 
-		// Auto-refresh weather every 5 minutes
-		const weatherInterval = setInterval(fetchWeather, 5 * 60 * 1000);
+		// Auto-refresh weather every 1 minute
+		const weatherInterval = setInterval(fetchWeather, 60 * 1000);
 
 		return () => {
 			mounted = false;
 			clearInterval(weatherInterval);
-		};
-
-		return () => {
-			mounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -255,91 +206,115 @@ export default function Map({ places = [], center = { lat: 37.1667, lng: 128.988
 				</div>
 			</div>
 
-			{/* Search overlay */}
-			<div style={{ position: "absolute", left: 12, top: 12, zIndex: 1000 }}>
-				<div style={{ background: "rgba(255,255,255,0.95)", padding: 8, borderRadius: 6, display: "flex", gap: 6 }}>
-					<input value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="Search in map..." style={{ padding: 6 }} />
-					<button onClick={searchInMap}>Search</button>
-				</div>
-				{/* Weather overlay */}
-				<div style={{ marginTop: 8, background: "rgba(255,255,255,0.95)", padding: 8, borderRadius: 6, fontSize: 12, maxWidth: 240 }}>
-					<strong>Weather</strong>
-					<br />
-					{!weather && !weatherError && <span>Loading...</span>}
-					{weatherError && <span style={{ color: "red" }}>Err: {weatherError}</span>}
+			{/* 기상 정보 패널 */}
+			<div style={{ position: "absolute", left: 12, top: 12, zIndex: 1000, maxWidth: 280 }}>
+				{/* 은하수 관측 정보 */}
+				<div style={{ background: "rgba(15, 23, 42, 0.95)", padding: 16, borderRadius: 12, fontSize: 13, color: "#e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}>
+					<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+						<span style={{ fontSize: 16, fontWeight: 700 }}>🌌 은하수 관측</span>
+						<button onClick={() => fetchWeather()} style={{ padding: "4px 8px", borderRadius: 4, border: "none", background: "rgba(255,255,255,0.1)", color: "#94a3b8", fontSize: 11, cursor: "pointer" }}>
+							새로고침
+						</button>
+					</div>
+
+					{!weather && !weatherError && <div style={{ color: "#94a3b8" }}>데이터 로딩 중...</div>}
+					{weatherError && <div style={{ color: "#f87171" }}>⚠️ {weatherError}</div>}
+
 					{weather && (
-						<div>
-							<div style={{ opacity: 0.7 }}>
-								{weather.source.toUpperCase()} • {new Date(weather.timestamp * 1000).toLocaleTimeString()}
-							</div>
-							<div>Cloud: {weather.cloudCoverPct}%</div>
-							<div>
-								Wind: {weather.windSpeedMs.toFixed(1)} m/s {weather.windDirectionDeg ? "(" + weather.windDirectionDeg + "°)" : ""}
-							</div>
-							<div>
-								Temp: {weather.temperatureC ?? "—"}°C Hum: {weather.humidityPct}%
-							</div>
-							{weather.dewPointC != null && <div>DewPt: {weather.dewPointC}°C</div>}
-							{weather.precipitationProbabilityPct != null && <div>POP: {weather.precipitationProbabilityPct}%</div>}
-							{weather.precipitationMm1h != null && <div>Rain1h: {weather.precipitationMm1h}mm</div>}
-							{weather.sunAltitudeDeg != null && <div>SunAlt: {weather.sunAltitudeDeg.toFixed(1)}°</div>}
-							{weather.moonAltitudeDeg != null && <div>MoonAlt: {weather.moonAltitudeDeg.toFixed(1)}°</div>}
-							{weather.moonIlluminationPct != null && <div>MoonIllum: {weather.moonIlluminationPct}%</div>}
-							{weather.threeHourTrend && weather.threeHourTrend.length > 0 && (
-								<div style={{ marginTop: 4 }}>
-									<div style={{ fontWeight: 600 }}>3h Trend</div>
-									<div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-										{weather.threeHourTrend.slice(0, 5).map((p) => (
-											<div key={p.dt} style={{ border: "1px solid #ccc", padding: "2px 4px", borderRadius: 3 }}>
-												{new Date(p.dt * 1000).getHours()}h{p.cloudCoverPct != null && <span> ☁{p.cloudCoverPct}</span>}
-												{p.windSpeedMs != null && <span> 🌀{p.windSpeedMs}</span>}
-												{p.precipitationProbabilityPct != null && <span> ☂{p.precipitationProbabilityPct}</span>}
-											</div>
-										))}
+						<>
+							{/* 달 정보 */}
+							<div style={{ background: "rgba(255,255,255,0.05)", padding: 12, borderRadius: 8, marginBottom: 12 }}>
+								<div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 8 }}>🌙 달 상태</div>
+								<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+									<div>
+										<div style={{ fontSize: 20, fontWeight: 700 }}>
+											{weather.moonPhaseName === "New Moon" ? "🌑" : weather.moonPhaseName === "Full Moon" ? "🌕" : weather.moonPhaseName?.includes("Waxing") ? "🌒" : "🌘"}
+											<span style={{ marginLeft: 8 }}>{weather.moonIlluminationPct ?? 0}%</span>
+										</div>
+										<div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{weather.moonPhaseName ?? "—"}</div>
+									</div>
+									<div style={{ textAlign: "right" }}>
+										<div style={{ fontSize: 14, fontWeight: 600, color: weather.moonAltitudeDeg && weather.moonAltitudeDeg < 0 ? "#4ade80" : "#fbbf24" }}>{weather.moonAltitudeDeg ? `${weather.moonAltitudeDeg.toFixed(1)}°` : "—"}</div>
+										<div style={{ fontSize: 11, color: "#94a3b8" }}>{weather.moonAltitudeDeg && weather.moonAltitudeDeg < 0 ? "지평선 아래 ✓" : "지평선 위 ⚠"}</div>
 									</div>
 								</div>
-							)}
-							{weather.fineTrend10m && weather.fineTrend10m.length > 0 && (
-								<div style={{ marginTop: 4 }}>
-									<div style={{ fontWeight: 600 }}>Fine Trend</div>
-									<div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-										{weather.fineTrend10m.slice(0, 6).map((p) => (
-											<div key={p.dt} style={{ border: "1px solid #ddd", padding: "2px 4px", borderRadius: 3 }}>
-												{new Date(p.dt * 1000).getHours()}:{new Date(p.dt * 1000).getMinutes().toString().padStart(2, "0")}
-												{p.cloudCoverLevel != null && <span> ☁L{p.cloudCoverLevel}</span>}
-												{p.precipitationMm1h != null && <span> ☂{p.precipitationMm1h}</span>}
-											</div>
-										))}
+							</div>
+
+							{/* 기상 정보 */}
+							<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+								<div style={{ background: "rgba(255,255,255,0.05)", padding: 10, borderRadius: 8 }}>
+									<div style={{ fontSize: 11, color: "#94a3b8" }}>🌡️ 기온</div>
+									<div style={{ fontSize: 18, fontWeight: 700 }}>{weather.temperatureC ?? "—"}°C</div>
+								</div>
+								<div style={{ background: "rgba(255,255,255,0.05)", padding: 10, borderRadius: 8 }}>
+									<div style={{ fontSize: 11, color: "#94a3b8" }}>💧 습도</div>
+									<div style={{ fontSize: 18, fontWeight: 700, color: weather.humidityPct > 70 ? "#fbbf24" : "#4ade80" }}>{weather.humidityPct ?? "—"}%</div>
+								</div>
+								<div style={{ background: "rgba(255,255,255,0.05)", padding: 10, borderRadius: 8 }}>
+									<div style={{ fontSize: 11, color: "#94a3b8" }}>💨 바람</div>
+									<div style={{ fontSize: 18, fontWeight: 700 }}>
+										{weather.windSpeedMs?.toFixed(1) ?? "—"}
+										<span style={{ fontSize: 12, fontWeight: 400 }}> m/s</span>
 									</div>
 								</div>
-							)}
-						</div>
+								<div style={{ background: "rgba(255,255,255,0.05)", padding: 10, borderRadius: 8 }}>
+									<div style={{ fontSize: 11, color: "#94a3b8" }}>🌧️ 강수</div>
+									<div style={{ fontSize: 18, fontWeight: 700 }}>
+										{weather.precipitationMm1h ?? 0}
+										<span style={{ fontSize: 12, fontWeight: 400 }}> mm</span>
+									</div>
+								</div>
+							</div>
+
+							{/* 업데이트 시간 */}
+							<div style={{ fontSize: 10, color: "#64748b", marginTop: 10, textAlign: "right" }}>{weather.timestamp ? new Date(weather.timestamp * 1000).toLocaleString("ko-KR") : ""}</div>
+						</>
 					)}
 				</div>
+
+				{/* 검색 (접힌 상태) */}
+				<details style={{ marginTop: 8 }}>
+					<summary style={{ background: "rgba(15, 23, 42, 0.9)", color: "#94a3b8", padding: "8px 12px", borderRadius: 8, cursor: "pointer", fontSize: 12 }}>🔍 장소 검색</summary>
+					<div style={{ background: "rgba(15, 23, 42, 0.95)", padding: 8, borderRadius: "0 0 8px 8px", display: "flex", gap: 6 }}>
+						<input
+							value={searchKeyword}
+							onChange={(e) => setSearchKeyword(e.target.value)}
+							onKeyDown={(e) => e.key === "Enter" && searchInMap()}
+							placeholder="검색어 입력..."
+							style={{ flex: 1, padding: 8, borderRadius: 4, border: "none", background: "rgba(255,255,255,0.1)", color: "#fff", fontSize: 13 }}
+						/>
+						<button onClick={searchInMap} style={{ padding: "8px 12px", borderRadius: 4, border: "none", background: "#3b82f6", color: "#fff", fontSize: 12, cursor: "pointer" }}>
+							검색
+						</button>
+					</div>
+				</details>
 			</div>
 
-			{/* Cloud Heatmap Toggle */}
-			<div style={{ position: "absolute", top: 12, right: 12, zIndex: 1100 }}>
+			{/* 구름 히트맵 토글 */}
+			<div style={{ position: "absolute", bottom: 12, right: 12, zIndex: 1100 }}>
 				<button
 					onClick={() => setShowCloudHeatmap((prev) => !prev)}
 					style={{
-						padding: "8px 14px",
-						background: showCloudHeatmap ? "#00b887" : "#444",
+						padding: "10px 16px",
+						background: showCloudHeatmap ? "rgba(59, 130, 246, 0.9)" : "rgba(30, 41, 59, 0.9)",
 						color: "#fff",
 						border: "none",
-						borderRadius: 6,
+						borderRadius: 8,
 						cursor: "pointer",
 						fontSize: 13,
 						fontWeight: 600,
-						boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
-						transition: "background .2s",
+						boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+						display: "flex",
+						alignItems: "center",
+						gap: 6,
 					}}
 				>
-					{showCloudHeatmap ? "구름 히트맵 끄기" : "구름 히트맵 켜기"}
+					☁️ 구름 히트맵 {showCloudHeatmap ? "ON" : "OFF"}
 				</button>
 			</div>
 
 			{/* Cloud Heatmap Overlay (기상 표준 팔레트 적용) */}
+			{/* 구름 히트맵: 지도 전체(뷰포트 기준)에 항상 표시 */}
 			<CloudHeatmapOverlay map={mapRef.current} enabled={showCloudHeatmap} style="meteo" />
 		</div>
 	);

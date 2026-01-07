@@ -55,16 +55,31 @@ export function createCloudHeatmap(data: CloudGridData, options: HeatmapOptions)
 	const cellWidth = width / data.xdim;
 	const cellHeight = height / data.ydim;
 
-	// 각 격자 그리기
+	// grid 값 분포 확인용
+	let min = 1,
+		max = 0,
+		sum = 0,
+		count = 0;
+	// grid 값이 1~2 범위면 0~1로 정규화
+	const gridMin = min;
+	const gridMax = max;
+	const normalize = (v: number) => {
+		if (gridMax - gridMin < 0.01) return 0; // 값이 거의 같으면 0
+		return (v - gridMin) / (gridMax - gridMin);
+	};
 	for (let y = 0; y < data.ydim; y++) {
 		for (let x = 0; x < data.xdim; x++) {
-			const value = data.grid[y]?.[x] || 0;
-			if (value <= 0) continue; // 구름 없으면 스킵
-
+			const raw = data.grid[y]?.[x] || 0;
+			if (raw <= 0) continue;
+			const value = normalize(raw);
 			const color = colorScale(value);
 			ctx.fillStyle = color;
 			ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 		}
+	}
+	if (count > 0) {
+		const avg = sum / count;
+		console.log(`[CloudHeatmap] grid value min:${min.toFixed(3)} max:${max.toFixed(3)} avg:${avg.toFixed(3)} count:${count}`);
 	}
 
 	// 전체 투명도 적용
@@ -122,17 +137,14 @@ export const auroraColorScale = (value: number): string => {
  */
 export const meteoCloudColorScale = (value: number): string => {
 	if (value <= 0.03) return "rgba(0,0,0,0)";
-
-	// 정의된 구간 스톱
+	// 강렬한 기상 팔레트: 파랑-초록-노랑-주황-빨강
 	const stops = [
-		{ v: 0.03, r: 190, g: 230, b: 255, a: 0.15 },
-		{ v: 0.2, r: 160, g: 205, b: 230, a: 0.45 },
-		{ v: 0.5, r: 130, g: 160, b: 180, a: 0.65 },
-		{ v: 0.8, r: 95, g: 105, b: 120, a: 0.85 },
-		{ v: 1.0, r: 70, g: 75, b: 90, a: 0.95 },
+		{ v: 0.03, r: 80, g: 180, b: 255, a: 0.7 }, // 하늘색
+		{ v: 0.2, r: 0, g: 220, b: 100, a: 0.8 }, // 초록
+		{ v: 0.5, r: 255, g: 230, b: 0, a: 0.85 }, // 노랑
+		{ v: 0.8, r: 255, g: 140, b: 0, a: 0.9 }, // 주황
+		{ v: 1.0, r: 255, g: 40, b: 40, a: 1.0 }, // 빨강
 	];
-
-	// value가 어느 두 스톱 사이에 위치하는지 찾기
 	let lower = stops[0];
 	let upper = stops[stops.length - 1];
 	for (let i = 0; i < stops.length - 1; i++) {
@@ -142,14 +154,11 @@ export const meteoCloudColorScale = (value: number): string => {
 			break;
 		}
 	}
-
 	const span = upper.v - lower.v || 1;
 	const t = Math.min(1, Math.max(0, (value - lower.v) / span));
-
 	const r = Math.round(lower.r + (upper.r - lower.r) * t);
 	const g = Math.round(lower.g + (upper.g - lower.g) * t);
 	const b = Math.round(lower.b + (upper.b - lower.b) * t);
 	const a = lower.a + (upper.a - lower.a) * t;
-
 	return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
