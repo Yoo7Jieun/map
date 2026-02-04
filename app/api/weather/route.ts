@@ -8,6 +8,9 @@ import { NextRequest, NextResponse } from "next/server";
 const KMA_API_KEY = process.env.KMA_SERVICE_KEY;
 const BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 
+// 디버깅: 환경 변수 확인
+console.log("[KMA] 환경 변수 로드 확인:", KMA_API_KEY ? `키 존재 (${KMA_API_KEY.length}자)` : "키 없음");
+
 function getBaseDateTime() {
 	const now = new Date();
 	const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
@@ -57,13 +60,24 @@ export async function GET(request: NextRequest) {
 		ny,
 	});
 
-	const url = `${BASE_URL}?serviceKey=${KMA_API_KEY}&${params}`;
-	console.log("[KMA API] Request URL:", url);
+	const url = `${BASE_URL}?serviceKey=${encodeURIComponent(KMA_API_KEY)}&${params}`;
+	console.log("[KMA API] Request URL (serviceKey 숨김):", `${BASE_URL}?serviceKey=***&${params}`);
 
 	try {
 		const response = await fetch(url, {
 			next: { revalidate: 600 }, // 10분 캐시
 		});
+
+		// 응답이 JSON인지 확인
+		const contentType = response.headers.get("content-type");
+		if (!contentType || !contentType.includes("application/json")) {
+			const text = await response.text();
+			console.error("[KMA API] 비JSON 응답:", text);
+			return NextResponse.json({ 
+				error: "기상청 API 인증 실패", 
+				detail: text.includes("Unauthorized") ? "API 키가 유효하지 않거나 인증에 실패했습니다. KMA_SERVICE_KEY 환경 변수를 확인해주세요." : text 
+			}, { status: 401 });
+		}
 
 		const data = await response.json();
 		console.log("[KMA API] Response:", JSON.stringify(data).slice(0, 500));

@@ -1,0 +1,742 @@
+{
+  "south_korea": {
+    "gangwon": {
+      "region_name": "강원도",
+      "region_code": "GW",
+      "spots": [
+        {
+          "id": "kr_001",
+          "name": "영월 별마로천문대",
+          "name_en": "Byulmaro Observatory, Yeongwol",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "영월군",
+          "district": "영월읍",
+          "address": "천문대길 397",
+          "full_address": "강원도 영월군 영월읍 천문대길 397",
+          "latitude": 37.1887,
+          "longitude": 128.4558,
+          "best_season": "9월~2월 (가을~겨울)",
+          "features": ["국내 최대 공립천문대", "해발 799.8m", "80cm 망원경", "연중 192일 이상 청명"]
+        },
+        {
+          "id": "kr_003",
+          "name": "강릉 안반데기",
+          "name_en": "Anbandegi, Gangneung",
+          "address_type": "precise",
+          "province": "강원특별자치도",
+          "city": "강릉시",
+          "district": "왕산면",
+          "address": "안반데기길 428",
+          "full_address": "강원특별자치도 강릉시 왕산면 안반데기길 428",
+          "latitude": 37.7184,
+          "longitude": 128.7251,
+          "best_season": "여름 6~8월",
+          "features": ["해발 1,100m 고원", "고랭지 배추밭", "은하수 관측 명소", "차박 성지"]
+        },
+        {
+          "id": "kr_005",
+          "name": "정선 새비재 타임캡슐공원",
+          "name_en": "Saebyejae Time Capsule Park, Jeongseon",
+          "address_type": "district",
+          "province": "강원도",
+          "city": "정선군",
+          "district": "북평면 시동리",
+          "address": null,
+          "full_address": "강원도 정선군 북평면 시동리",
+          "latitude": 37.3214,
+          "longitude": 128.7892,
+          "best_season": "여름 6~9월",
+          "features": ["고도 높음", "탁 트인 전망", "은하수 파노라마", "서울 근교 추천"]
+        },
+        {
+          "id": "kr_006",
+          "name": "평창 육백마지기",
+          "name_en": "Yukbaek-Majigi, Pyeongchang",
+          "address_type": "street",
+          "province": "강원도",
+          "city": "평창군",
+          "district": "봉평면",
+          "address": "청옥산로",
+          "full_address": "강원도 평창군 봉평면 청옥산로",
+          "latitude": 37.6287,
+          "longitude": 128.4652,
+          "best_season": "여름 7~9월",
+          "features": ["청옥산 정상", "고산 초원", "360도 파노라마", "은하수 전망"]
+        },
+        {
+          "id": "kr_007",
+          "name": "속초 설악산 울산바위",
+          "name_en": "Ulsanbawi Rock, Seoraksan",
+          "address_type": "street",
+          "province": "강원도",
+          "city": "속초시",
+          "district": null,
+          "address": "설악산로",
+          "full_address": "강원도 속초시 설악산로",
+          "latitude": 38.1435,
+          "longitude": 128.4628,
+          "best_season": "여름 6~8월",
+          "features": ["울산바위 위로 은하수", "사진 명소", "등산 필요", "주변 광해 적음"]
+        },
+        {
+          "id": "kr_009",
+          "name": "홍천",
+          "name_en": "Hongcheon",
+          "address_type": "region",
+          "province": "강원도",
+          "city": "홍천군",
+          "district": "일대",
+          "address": null,
+          "full_address": "강원도 홍천군 일대",
+          "latitude": 37.6964,
+          "longitude": 127.8889,
+          "best_season": "여름 6~9월",
+          "features": ["빛 공해 적음", "숲과 계곡 지역", "서울 근교", "차박 명소"]
+        },
+        {
+          "id": "kr_010",
+          "name": "화천 광덕산 조경철천문대",
+          "name_en": "Jo Gyeong-cheol Observatory, Gwangdeoksan",
+          "address_type": "district",
+          "province": "강원도",
+          "city": "화천군",
+          "district": "사내면 광덕리",
+          "address": null,
+          "full_address": "강원도 화천군 사내면 광덕리",
+          "latitude": 38.0586,
+          "longitude": 127.5789,
+          "best_season": "연중",
+          "features": ["해발 1,010m", "시민천문대 최고 고도", "별 관측 프로그램"]
+        },
+        {
+          "id": "kr_011",
+          "name": "강릉 주문진 외곽 해안",
+          "name_en": "Jumunjin Coast, Gangneung",
+          "address_type": "street",
+          "province": "강원도",
+          "city": "강릉시",
+          "district": "주문진읍",
+          "address": "해안로 일대",
+          "full_address": "강원도 강릉시 주문진읍 해안로 일대",
+          "latitude": 37.8967,
+          "longitude": 128.8201,
+          "best_season": "여름 6~9월",
+          "features": ["동해 바다", "시원한 시야", "해안 은하수", "일출 명소"]
+        },
+        {
+          "id": "kr_021",
+          "name": "태백 함백산 은하수길",
+          "name_en": "Hambaksan Milky Way Road, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": "혈동",
+          "address": "산57-7번지 일원",
+          "full_address": "강원도 태백시 혈동 산57-7번지 일원",
+          "latitude": 37.2159,
+          "longitude": 128.9761,
+          "best_season": "연중 (7월 11~23일, 8월 9~23일 최적)",
+          "features": ["국내 최고 은하수 관측지", "해발 1,312m", "빛공해 지수 1.00 (최저)", "오투전망대 포함", "차량 접근 가능", "5개 관측 포인트"]
+        },
+        {
+          "id": "kr_022",
+          "name": "태백 오투리조트",
+          "name_en": "O2 Resort, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "서학로 861",
+          "full_address": "강원도 태백시 서학로 861",
+          "latitude": 37.1710,
+          "longitude": 128.9497,
+          "best_season": "연중",
+          "features": ["해발 996m 고원", "빛공해 지수 1.50", "스키장", "콘도 숙박시설", "리조트 시설", "골프장"]
+        },
+        {
+          "id": "kr_023",
+          "name": "태백 스포츠파크",
+          "name_en": "Taebaek Sports Park",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "백두대간로 179",
+          "full_address": "강원도 태백시 백두대간로 179",
+          "latitude": 37.1956,
+          "longitude": 129.1047,
+          "best_season": "연중 (여름 최적)",
+          "features": ["해발 812m", "빛공해 지수 1.50", "태백 시내 인근", "시민 체육시설", "야간 광해 최소"]
+        },
+        {
+          "id": "kr_024",
+          "name": "태백 오로라파크",
+          "name_en": "Aurora Park, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "통리길 72",
+          "full_address": "강원도 태백시 통리길 72",
+          "latitude": 37.1584,
+          "longitude": 129.0892,
+          "best_season": "연중",
+          "features": ["해발 686m", "빛공해 지수 5.50", "폐광 복합문화공간", "고래 조형물", "포토존", "카페/식당"]
+        },
+        {
+          "id": "kr_025",
+          "name": "태백 탄탄파크",
+          "name_en": "TanTan Park, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "통골길 116-44",
+          "full_address": "강원도 태백시 통골길 116-44",
+          "latitude": 37.1456,
+          "longitude": 129.0756,
+          "best_season": "연중",
+          "features": ["해발 742m", "빛공해 지수 2.80", "폐광 유산 활용", "드라마 촬영지 (태양의 후예)", "주변 어두움", "산업 유산"]
+        },
+        {
+          "id": "kr_026",
+          "name": "태백 구문소 (태백고생대자연사박물관)",
+          "name_en": "Gumunso & Natural History Museum, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "구문소길 430",
+          "full_address": "강원도 태백시 구문소길 430",
+          "latitude": 37.2387,
+          "longitude": 129.1159,
+          "best_season": "연중 (여름 프로그램 운영)",
+          "features": ["해발 540m", "빛공해 지수 5.20", "천연기념물", "자연사박물관", "별관측 프로그램", "천체망원경", "지질공원"]
+        },
+        {
+          "id": "kr_027",
+          "name": "태백산 당골광장",
+          "name_en": "Taebaeksan National Park, Dangol Plaza",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": null,
+          "address": "태백산로 401",
+          "full_address": "강원도 태백시 태백산로 401",
+          "latitude": 37.3245,
+          "longitude": 129.0347,
+          "best_season": "연중",
+          "features": ["해발 865m", "빛공해 지수 4.07", "국립공원", "천제단", "영봉 (1,560m)", "장군봉", "문수봉"]
+        },
+        {
+          "id": "kr_028",
+          "name": "태백 매봉산 바람의 언덕",
+          "name_en": "Maebongsan Wind Hill, Taebaek",
+          "address_type": "precise",
+          "province": "강원도",
+          "city": "태백시",
+          "district": "창죽동",
+          "address": "매봉산길 206",
+          "full_address": "강원도 태백시 매봉산길 206 (창죽동)",
+          "latitude": 37.2814,
+          "longitude": 128.9087,
+          "best_season": "여름 6~9월 (고랭지 배추밭 동안)",
+          "features": ["해발 1,286m", "풍력발전단지", "고랭지 배추밭", "인생샷 명소", "차량 접근 가능", "등산로 30분", "유럽식 풍경"]
+        }
+      ]
+    },
+    "gyeongbuk": {
+      "region_name": "경상북도",
+      "region_code": "GB",
+      "spots": [
+        {
+          "id": "kr_002",
+          "name": "영양 국제밤하늘보호공원",
+          "name_en": "Yeongyang International Dark Sky Park",
+          "address_type": "precise",
+          "province": "경상북도",
+          "city": "영양군",
+          "district": "수비면",
+          "address": "반딧불이로 227",
+          "full_address": "경상북도 영양군 수비면 반딧불이로 227",
+          "latitude": 36.7469,
+          "longitude": 129.0982,
+          "best_season": "연중 (여름 6~8월 최적)",
+          "features": ["아시아 최초 IDA 국제밤하늘보호공원", "실버등급", "반딧불이 생태숲", "은하수 맛집"]
+        },
+        {
+          "id": "kr_019",
+          "name": "경주 근교",
+          "name_en": "Gyeongju Area",
+          "address_type": "region",
+          "province": "경상북도",
+          "city": "경주시",
+          "district": "외곽 지역",
+          "address": null,
+          "full_address": "경상북도 경주시 외곽 지역",
+          "latitude": 35.8562,
+          "longitude": 129.2247,
+          "best_season": "여름 6~9월",
+          "features": ["역사 도시 외곽", "중간 광해", "접근성 좋음"]
+        }
+      ]
+    },
+    "gyeongnam": {
+      "region_name": "경상남도",
+      "region_code": "GN",
+      "spots": [
+        {
+          "id": "kr_020",
+          "name": "거창 월성청소년수련원",
+          "name_en": "Wolseong Youth Training Center, Geochang",
+          "address_type": "district",
+          "province": "경상남도",
+          "city": "거창군",
+          "district": "위천면",
+          "address": null,
+          "full_address": "경상남도 거창군 위천면",
+          "latitude": 35.7458,
+          "longitude": 127.8956,
+          "best_season": "연중",
+          "features": ["천문대", "교육 시설", "산간 지역"]
+        }
+      ]
+    },
+    "jeonnam": {
+      "region_name": "전라남도",
+      "region_code": "JN",
+      "spots": [
+        {
+          "id": "kr_004",
+          "name": "완도 청산도",
+          "name_en": "Cheongsando Island, Wando",
+          "address_type": "precise",
+          "province": "전라남도",
+          "city": "완도군",
+          "district": "청산면",
+          "address": "청산로 541",
+          "full_address": "전라남도 완도군 청산면 청산로 541",
+          "latitude": 34.1385,
+          "longitude": 126.8832,
+          "best_season": "4~6월, 9~10월",
+          "features": ["섬 지역", "아시아 최초 슬로시티", "낮은 광해", "은하수 육안 관측 가능"]
+        }
+      ]
+    },
+    "jeonbuk": {
+      "region_name": "전라북도",
+      "region_code": "JB",
+      "spots": [
+        {
+          "id": "kr_017",
+          "name": "고창 고인돌천문대",
+          "name_en": "Dolmen Astronomy Observatory, Gochang",
+          "address_type": "district",
+          "province": "전라북도",
+          "city": "고창군",
+          "district": "고창읍",
+          "address": null,
+          "full_address": "전라북도 고창군 고창읍",
+          "latitude": 35.4358,
+          "longitude": 126.7012,
+          "best_season": "연중",
+          "features": ["선사시대 유적 근처", "천문대", "교육 프로그램"]
+        }
+      ]
+    },
+    "chungbuk": {
+      "region_name": "충청북도",
+      "region_code": "CB",
+      "spots": [
+        {
+          "id": "kr_012",
+          "name": "제천 덕주산성",
+          "name_en": "Deokjusanseong, Jecheon",
+          "address_type": "district",
+          "province": "충청북도",
+          "city": "제천시",
+          "district": "덕산면",
+          "address": null,
+          "full_address": "충청북도 제천시 덕산면",
+          "latitude": 37.0825,
+          "longitude": 128.1756,
+          "best_season": "여름 6~9월",
+          "features": ["산성", "높은 고도", "주변 광해 적음"]
+        },
+        {
+          "id": "kr_018",
+          "name": "단양 소백산천문대",
+          "name_en": "Sobaeksan Observatory",
+          "address_type": "street",
+          "province": "충청북도",
+          "city": "단양군",
+          "district": "단양읍",
+          "address": "소백산로",
+          "full_address": "충청북도 단양군 단양읍 소백산로",
+          "latitude": 36.9358,
+          "longitude": 128.4587,
+          "best_season": "연중",
+          "features": ["소백산 정상 근처", "전문 천문대", "높은 고도"]
+        }
+      ]
+    },
+    "chungnam": {
+      "region_name": "충청남도",
+      "region_code": "CN",
+      "spots": [
+        {
+          "id": "kr_013",
+          "name": "태안 운여해변",
+          "name_en": "Unyeo Beach, Taean",
+          "address_type": "district",
+          "province": "충청남도",
+          "city": "태안군",
+          "district": "소원면 모항리",
+          "address": null,
+          "full_address": "충청남도 태안군 소원면 모항리",
+          "latitude": 36.7458,
+          "longitude": 126.2156,
+          "best_season": "여름 6~9월",
+          "features": ["서해 해안", "백사장", "은하수 반영", "해변 관측"]
+        },
+        {
+          "id": "kr_014",
+          "name": "부여 성흥산성",
+          "name_en": "Seongheungsanseong, Buyeo",
+          "address_type": "district",
+          "province": "충청남도",
+          "city": "부여군",
+          "district": "임천면",
+          "address": null,
+          "full_address": "충청남도 부여군 임천면",
+          "latitude": 36.2147,
+          "longitude": 126.7985,
+          "best_season": "여름 6~9월",
+          "features": ["산성", "역사 유적", "주변 어두움"]
+        }
+      ]
+    },
+    "gyeonggi": {
+      "region_name": "경기도",
+      "region_code": "GG",
+      "spots": [
+        {
+          "id": "kr_008",
+          "name": "가평 화악터널 별빛정원",
+          "name_en": "Hwayak Tunnel Starlight Garden, Gapyeong",
+          "address_type": "street",
+          "province": "경기도",
+          "city": "가평군",
+          "district": "북면",
+          "address": "화악산로",
+          "full_address": "경기도 가평군 북면 화악산로",
+          "latitude": 37.9245,
+          "longitude": 127.4358,
+          "best_season": "여름 6~9월",
+          "features": ["서울 근교", "접근성 좋음", "화악산 고지대", "쌈지공원"]
+        }
+      ]
+    },
+    "jeju": {
+      "region_name": "제주특별자치도",
+      "region_code": "JJ",
+      "spots": [
+        {
+          "id": "kr_015",
+          "name": "제주도 중산간 지역",
+          "name_en": "Mid-mountain Area, Jeju",
+          "address_type": "region",
+          "province": "제주특별자치도",
+          "city": "전역",
+          "district": "중산간 일대",
+          "address": null,
+          "full_address": "제주특별자치도 애월읍/조천읍/한림읍 일대",
+          "latitude": 33.4356,
+          "longitude": 126.5689,
+          "best_season": "연중 (여름 최적)",
+          "features": ["도시 불빛에서 멀리", "접근성 좋음", "관측 명소 다수", "섬 지역"]
+        },
+        {
+          "id": "kr_016",
+          "name": "제주 별빛누리공원",
+          "name_en": "Starlight Nuri Park, Jeju",
+          "address_type": "district",
+          "province": "제주특별자치도",
+          "city": "제주시",
+          "district": "오등동",
+          "address": null,
+          "full_address": "제주특별자치도 제주시 오등동",
+          "latitude": 33.4876,
+          "longitude": 126.5469,
+          "best_season": "연중",
+          "features": ["천문 테마파크", "600mm 주망원경", "4D 우주체험관", "교육 프로그램"]
+        }
+      ]
+    }
+  },
+  "world": {
+    "south_america": {
+      "region_name": "남아메리카",
+      "region_code": "SA",
+      "spots": [
+        {
+          "id": "world_001",
+          "name": "칠레 아타카마 사막",
+          "name_en": "Atacama Desert, Chile",
+          "country": "Chile",
+          "region": "Northern Chile",
+          "latitude": -24.5,
+          "longitude": -69.25,
+          "best_season": "5~9월 (건기)",
+          "features": ["세계에서 가장 건조한 사막", "ALMA 천문대", "극저습도", "고고도", "세계 최고 관측 조건"]
+        },
+        {
+          "id": "world_018",
+          "name": "칠레 파타고니아 토레스 델 파이네",
+          "name_en": "Torres del Paine National Park, Chile",
+          "country": "Chile",
+          "region": "Patagonia",
+          "latitude": -51.0,
+          "longitude": -73.0,
+          "best_season": "11~3월 (남반구 여름)",
+          "features": ["파타고니아", "산악", "빙하", "남반구 별자리", "마젤란 은하"]
+        },
+        {
+          "id": "world_020",
+          "name": "볼리비아 우유니 소금사막",
+          "name_en": "Uyuni Salt Flats, Bolivia",
+          "country": "Bolivia",
+          "region": "Altiplano",
+          "latitude": -20.3034,
+          "longitude": -66.8251,
+          "best_season": "5~10월 (건기)",
+          "features": ["세계 최대 소금사막", "하늘 거울", "해발 3,656m", "은하수 반영", "360도 지평선"]
+        }
+      ]
+    },
+    "oceania": {
+      "region_name": "오세아니아",
+      "region_code": "OC",
+      "spots": [
+        {
+          "id": "world_002",
+          "name": "뉴질랜드 테카포 호수",
+          "name_en": "Lake Tekapo, New Zealand",
+          "country": "New Zealand",
+          "region": "South Island, Mackenzie Basin",
+          "latitude": -43.8833,
+          "longitude": 170.5167,
+          "best_season": "연중 (12~2월 여름)",
+          "features": ["IDA 국제 밤하늘 보호구역", "선한목자 교회", "남반구 별자리", "세계 최대 다크스카이 보호구역"]
+        },
+        {
+          "id": "world_015",
+          "name": "호주 울레미 국립공원",
+          "name_en": "Wollemi National Park, Australia",
+          "country": "Australia",
+          "region": "New South Wales",
+          "latitude": -33.0,
+          "longitude": 150.5,
+          "best_season": "4~10월",
+          "features": ["시드니 근교", "협곡", "남반구 별자리", "마젤란 은하"]
+        }
+      ]
+    },
+    "north_america": {
+      "region_name": "북아메리카",
+      "region_code": "NA",
+      "spots": [
+        {
+          "id": "world_003",
+          "name": "미국 하와이 마우나케아",
+          "name_en": "Mauna Kea, Hawaii, USA",
+          "country": "United States",
+          "region": "Hawaii, Big Island",
+          "latitude": 19.8206,
+          "longitude": -155.4681,
+          "best_season": "연중",
+          "features": ["해발 4,207m", "세계 최대 광학망원경", "13개 천문대", "극저습도", "적도 근처"]
+        },
+        {
+          "id": "world_006",
+          "name": "미국 체리 스프링스 주립공원",
+          "name_en": "Cherry Springs State Park, Pennsylvania, USA",
+          "country": "United States",
+          "region": "Pennsylvania",
+          "latitude": 41.6638,
+          "longitude": -77.8232,
+          "best_season": "연중 (여름 6~9월 최적)",
+          "features": ["미국 동부 최고 다크스카이", "IDA 인증", "해발 700m", "별 축제", "북극광 관측 가능"]
+        },
+        {
+          "id": "world_007",
+          "name": "미국 그랜드캐니언 국립공원",
+          "name_en": "Grand Canyon National Park, USA",
+          "country": "United States",
+          "region": "Arizona",
+          "latitude": 36.1069,
+          "longitude": -112.1129,
+          "best_season": "5~9월",
+          "features": ["협곡 위 별빛", "Grand Canyon Star Party", "천문 관측 프로그램"]
+        },
+        {
+          "id": "world_008",
+          "name": "미국 조슈아 트리 국립공원",
+          "name_en": "Joshua Tree National Park, USA",
+          "country": "United States",
+          "region": "California",
+          "latitude": 33.8734,
+          "longitude": -115.9010,
+          "best_season": "10~4월",
+          "features": ["사막 기후", "독특한 식물", "낮은 습도", "로스앤젤레스 근교"]
+        },
+        {
+          "id": "world_004",
+          "name": "캐나다 재스퍼 국립공원",
+          "name_en": "Jasper National Park, Canada",
+          "country": "Canada",
+          "region": "Alberta, Rocky Mountains",
+          "latitude": 52.8,
+          "longitude": -117.9,
+          "best_season": "9~3월 (북극광 관측)",
+          "features": ["IDA 다크스카이 보호구역", "북극광", "로키산맥", "Dark Sky Festival"]
+        },
+        {
+          "id": "world_009",
+          "name": "캐나다 밴프 국립공원",
+          "name_en": "Banff National Park, Canada",
+          "country": "Canada",
+          "region": "Alberta, Rocky Mountains",
+          "latitude": 51.4968,
+          "longitude": -115.9281,
+          "best_season": "6~9월, 12~2월",
+          "features": ["로키산맥", "Two Jack Lake", "Vermilion Lakes", "산악 은하수"]
+        },
+        {
+          "id": "world_010",
+          "name": "캐나다 몽메간틱 국제 다크스카이 보호구역",
+          "name_en": "Mont-Mégantic International Dark Sky Reserve, Canada",
+          "country": "Canada",
+          "region": "Quebec",
+          "latitude": 45.46,
+          "longitude": -71.15,
+          "best_season": "연중",
+          "features": ["세계 최초 다크스카이 보호구역", "천문대", "5,260 km² 보호구역"]
+        }
+      ]
+    },
+    "africa": {
+      "region_name": "아프리카",
+      "region_code": "AF",
+      "spots": [
+        {
+          "id": "world_005",
+          "name": "나미비아 나미브랜드 자연보호구역",
+          "name_en": "NamibRand Nature Reserve, Namibia",
+          "country": "Namibia",
+          "region": "Southwestern Namibia",
+          "latitude": -25.0,
+          "longitude": 16.0,
+          "best_season": "4~10월 (건기)",
+          "features": ["IDA 골드등급 최초 획득", "나미브 사막", "21만 헥타르", "세계 최고 어둠"]
+        }
+      ]
+    },
+    "asia": {
+      "region_name": "아시아",
+      "region_code": "AS",
+      "spots": [
+        {
+          "id": "world_011",
+          "name": "인도네시아 브로모산",
+          "name_en": "Mount Bromo, Indonesia",
+          "country": "Indonesia",
+          "region": "East Java",
+          "latitude": -7.9425,
+          "longitude": 112.9531,
+          "best_season": "4~10월 (건기)",
+          "features": ["활화산", "적도 근처", "남반구 별자리", "안드로메다 은하 관측"]
+        },
+        {
+          "id": "world_017",
+          "name": "터키 카파도키아",
+          "name_en": "Cappadocia, Turkey",
+          "country": "Turkey",
+          "region": "Central Anatolia",
+          "latitude": 38.6431,
+          "longitude": 34.8289,
+          "best_season": "4~10월",
+          "features": ["요정 굴뚝", "화산 지형", "열기구", "Draconids 유성우", "달 풍경"]
+        }
+      ]
+    },
+    "middle_east": {
+      "region_name": "중동",
+      "region_code": "ME",
+      "spots": [
+        {
+          "id": "world_012",
+          "name": "요르단 와디럼",
+          "name_en": "Wadi Rum, Jordan",
+          "country": "Jordan",
+          "region": "Southern Jordan",
+          "latitude": 29.5753,
+          "longitude": 35.4183,
+          "best_season": "3~5월, 9~11월",
+          "features": ["Valley of the Moon", "붉은 사암", "화성 풍경", "베두인 캠프"]
+        },
+        {
+          "id": "world_019",
+          "name": "이스라엘 라몬 크레이터",
+          "name_en": "Ramon Crater, Israel",
+          "country": "Israel",
+          "region": "Negev Desert",
+          "latitude": 30.58,
+          "longitude": 34.82,
+          "best_season": "9~5월",
+          "features": ["IDA 다크스카이 파크", "세계 최대 침식 크레이터", "사막", "11만 헥타르"]
+        }
+      ]
+    },
+    "europe": {
+      "region_name": "유럽",
+      "region_code": "EU",
+      "spots": [
+        {
+          "id": "world_013",
+          "name": "스페인 라 팔마 섬",
+          "name_en": "La Palma, Canary Islands, Spain",
+          "country": "Spain",
+          "region": "Canary Islands",
+          "latitude": 28.6835,
+          "longitude": -17.8645,
+          "best_season": "연중",
+          "features": ["Roque de los Muchachos 천문대", "해발 2,400m", "구름 위", "IDA 인증", "Starlight 보호구역"]
+        },
+        {
+          "id": "world_014",
+          "name": "이탈리아 돌로미티 산맥",
+          "name_en": "Dolomites, Italy",
+          "country": "Italy",
+          "region": "Northern Italy",
+          "latitude": 46.4102,
+          "longitude": 11.8440,
+          "best_season": "6~9월",
+          "features": ["트레 치메 디 라바레도", "알프스", "UNESCO 세계유산", "산악 은하수"]
+        },
+        {
+          "id": "world_016",
+          "name": "영국 노스 요크 무어스 국립공원",
+          "name_en": "North York Moors National Park, UK",
+          "country": "United Kingdom",
+          "region": "North Yorkshire, England",
+          "latitude": 54.4,
+          "longitude": -0.95,
+          "best_season": "9~11월",
+          "features": ["IDA 다크스카이 보호구역", "영국 최대", "은하수와 안드로메다 은하", "무어 지형"]
+        }
+      ]
+    }
+  }
+}
